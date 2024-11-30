@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 const companiesSchema = new mongoose.Schema({
     accountID: { type: mongoose.Schema.Types.ObjectId, ref: 'Accounts', required: true },
     profile: {
-        companyName: { type: String, required: true },
-        branch: { type: String, required: true },
+        companyName: { type: String },
+        branch: { type: String },
         email: { type: String, required: true },
         address: {
             buildingNo: { type: String, required: true },
