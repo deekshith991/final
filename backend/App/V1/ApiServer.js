@@ -4,6 +4,8 @@ import cors from "cors";
 
 configDotenv();
 
+import DbConnect from "./DB/DbConnect.js";
+
 
 const ApiServer = () => {
     console.log("[=] version 1 UP");
@@ -22,6 +24,7 @@ const ApiServer = () => {
     app.use(cors(corsOptions));
 
     app.listen(PORT, () => {
+        DbConnect();
         console.log(`[*] Server is Online @ http://localhost:${PORT}`);
     });
 
