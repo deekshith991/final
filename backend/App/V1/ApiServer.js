@@ -5,7 +5,7 @@ import cors from "cors";
 configDotenv();
 
 import DbConnect from "./DB/DbConnect.js";
-
+import AuthRoute from "./Routes/AuthRoute.js";
 
 const ApiServer = () => {
     console.log("[=] version 1 UP");
@@ -35,7 +35,7 @@ const ApiServer = () => {
 
 
     //routes
-
+    app.use('/auth', AuthRoute);
 
 
 
