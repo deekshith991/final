@@ -18,4 +18,4 @@ const jobsSchema = new mongoose.Schema({
     ],
 });
 
-module.exports = mongoose.model('Jobs', jobsSchema);
+export default mongoose.model('Jobs', jobsSchema);
