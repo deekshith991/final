@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import InputField from '../common/InputField';
 import Button from '../common/Button';
 import DropdownField from '../common/DropDown';
-import SearchField from '../common/Search';
+import { AuthContext } from '../context/AuthContext';
 
 const RegisterPage = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        role: '',
-    });
+    const { register } = useContext(AuthContext);
+    const [formData, setFormData] = useState({ email: '', password: '', accountType: '' });
 
     const handleInputChange = (name, value) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert(`Registration data submitted: ${JSON.stringify(formData)}`);
+        try {
+            const response = await register(formData.email, formData.password, formData.accountType);
+            console.log("Registration Success:", response);
+        } catch (error) {
+            console.error("Registration Failed:", error.response?.data || error.message);
+        }
     };
 
     return (
@@ -29,14 +27,7 @@ const RegisterPage = () => {
             <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <InputField
-                        label="Name"
-                        value={formData.name}
-                        onChange={(e) => handleInputChange('name', e.target.value)}
-                        name="name"
-                        placeholder="Enter your name"
-                        required
-                    />
+
                     <InputField
                         label="Email"
                         value={formData.email}
@@ -56,16 +47,16 @@ const RegisterPage = () => {
                         required
                     />
                     <DropdownField
-                        label="Select Role"
-                        value={formData.role}
+                        label="Account Type"
+                        value={formData.accountType}
                         onChange={handleInputChange}
-                        name="role"
+                        name="accountType"
                         options={['user', 'company']}
                         placeholder="Select a role"
                         required
                     />
 
-                    <Button text="Register" onClick={handleSubmit} color="green" />
+                    <Button text="Register" color="green" onClick={handleSubmit} />
                 </form>
                 <div className="mt-4 text-center">
                     <span className="text-sm">

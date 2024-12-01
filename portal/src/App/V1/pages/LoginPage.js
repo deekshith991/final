@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
-import InputField from "../common/InputField.js";
-import Button from "../common/Button.js";
+import React, { useContext, useState } from 'react';
+import InputField from "../common/InputField";
+import Button from "../common/Button";
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const { login } = useContext(AuthContext);
+    const [formData, setFormData] = useState({ email: '', password: '' });
 
-    // Handle input change for email and password fields
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value, // Update the corresponding field in the state
-        }));
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert(`Login data submitted: ${JSON.stringify(formData)}`);
+        try {
+            const response = await login(formData.email, formData.password);
+            console.log("Login Success:", response);
+        } catch (error) {
+            console.error("Login Failed:", error.response?.data || error.message);
+        }
     };
 
     return (
@@ -30,18 +29,18 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <InputField
                         label="Email"
-                        value={formData.email}  // Bind email input to state
-                        onChange={handleInputChange}  // Handle email input change
-                        name="email"  // Use name attribute for state update
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        name="email"
                         type="email"
                         placeholder="Enter your email"
                         required
                     />
                     <InputField
                         label="Password"
-                        value={formData.password}  // Bind password input to state
-                        onChange={handleInputChange}  // Handle password input change
-                        name="password"  // Use name attribute for state update
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        name="password"
                         type="password"
                         placeholder="Enter your password"
                         required
