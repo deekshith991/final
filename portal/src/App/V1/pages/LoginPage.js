@@ -2,9 +2,12 @@ import React, { useContext, useState } from 'react';
 import InputField from "../common/InputField";
 import Button from "../common/Button";
 import { AuthContext } from '../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
     const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({ email: '', password: '' });
 
     const handleInputChange = (e) => {
@@ -17,6 +20,7 @@ const LoginPage = () => {
         try {
             const response = await login(formData.email, formData.password);
             console.log("Login Success:", response);
+            navigate("/dashboard");
         } catch (error) {
             console.error("Login Failed:", error.response?.data || error.message);
         }
@@ -50,7 +54,7 @@ const LoginPage = () => {
                 <div className="mt-4 text-center">
                     <span className="text-sm">
                         Don't have an account?{' '}
-                        <a href="/register" className="text-blue-500">Register</a>
+                        <Link to="/register" className="text-blue-500">Register</Link>
                     </span>
                 </div>
             </div>

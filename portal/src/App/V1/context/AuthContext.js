@@ -8,9 +8,9 @@ export const AuthProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // Load user data from localStorage on mount
+    // Load authentication state from localStorage on mount
     useEffect(() => {
-        try {
+        const loadAuthState = () => {
             const storedToken = localStorage.getItem("authToken");
             const storedUser = localStorage.getItem("userData");
             if (storedToken && storedUser) {
@@ -18,12 +18,11 @@ export const AuthProvider = ({ children }) => {
                 setUserData(JSON.parse(storedUser));
                 setIsAuthenticated(true);
             }
-        } catch (error) {
-            console.error("Failed to parse userData from localStorage:", error);
-        }
+        };
+        loadAuthState();
     }, []);
 
-    // Helper function to handle login or register success
+    // Save authentication state to localStorage and update context
     const handleAuthSuccess = (token, userData) => {
         setAuthToken(token);
         setUserData(userData);
@@ -35,26 +34,30 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const response = await authService.login(email, password);
-            if (response?.token && response?.userData) {
-                handleAuthSuccess(response.token, response.userData);
+            if (response?.success && response?.data?.token && response?.data?.userData) {
+                handleAuthSuccess(response.data.token, response.data.userData);
+                return response;
+            } else {
+                throw new Error("Invalid login response format");
             }
-            return response;
         } catch (error) {
-            console.error("@AuthContext -> login Error:", error.response?.data || error.message);
-            throw error;
+            console.error("Login Error:", error.message || error);
+            throw new Error(error.response?.data?.message || "Failed to login");
         }
     };
 
     const register = async (email, password, accountType) => {
         try {
             const response = await authService.register(email, password, accountType);
-            if (response?.token && response?.userData) {
-                handleAuthSuccess(response.token, response.userData);
+            if (response?.success && response?.data?.token && response?.data?.userData) {
+                handleAuthSuccess(response.data.token, response.data.userData);
+                return response;
+            } else {
+                throw new Error("Invalid register response format");
             }
-            return response;
         } catch (error) {
-            console.error("@AuthContext -> register Error:", error.response?.data || error.message);
-            throw error;
+            console.error("Register Error:", error.message || error);
+            throw new Error(error.response?.data?.message || "Failed to register");
         }
     };
 
@@ -65,6 +68,15 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("userData");
     };
+
+    // Debugging: Log authentication state changes
+    useEffect(() => {
+        console.log("Auth State Updated:", {
+            authToken,
+            userData,
+            isAuthenticated,
+        });
+    }, [authToken, userData, isAuthenticated]);
 
     return (
         <AuthContext.Provider

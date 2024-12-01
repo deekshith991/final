@@ -3,6 +3,7 @@ import InputField from '../common/InputField';
 import Button from '../common/Button';
 import DropdownField from '../common/DropDown';
 import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const RegisterPage = () => {
     const { register } = useContext(AuthContext);
@@ -61,7 +62,7 @@ const RegisterPage = () => {
                 <div className="mt-4 text-center">
                     <span className="text-sm">
                         Already have an account?{' '}
-                        <a href="/login" className="text-blue-500">Login</a>
+                        <Link to="/login" className="text-blue-500">Login</Link>
                     </span>
                 </div>
             </div>
