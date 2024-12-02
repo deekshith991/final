@@ -1,9 +1,9 @@
-import AppV1 from "./App/V1/AppV1";
+import AppV2 from "./V2/AppV2";
 
 function App() {
   return (
     <div className="App">
-      <AppV1 />
+      <AppV2 />
     </div>
   );
 }
