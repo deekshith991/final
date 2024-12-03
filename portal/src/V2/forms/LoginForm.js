@@ -1,6 +1,6 @@
-
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useSetAtom } from "jotai";
+import { loginAtom } from "../atoms/authAtoms";
 import { useNavigate } from "react-router-dom";
 
 import InputField from "../UI/InputField";
@@ -9,61 +9,70 @@ import ErrorBlock from "../UI/ErrorBlock";
 import axiosInstance from "../context/AxiosInstance";
 
 const LoginForm = () => {
-    const [creds, setCreds] = useState({ email: '', password: '' });
+    const [credentials, setCredentials] = useState({ email: "", password: "" });
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const { login } = useAuth();
+    const login = useSetAtom(loginAtom);
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCreds((prevState) => ({
+    const handleInputChange = ({ target: { name, value } }) => {
+        setCredentials((prevState) => ({
             ...prevState,
             [name]: value,
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+        setIsLoading(true);
         setError(null);
 
         try {
-            const response = await axiosInstance.post("auth/login", creds);
-            login(response.data.data);
-            navigate('/dashboard');
-
-            console.log("Login successful:", response.data);
-        } catch (err) {
-            console.error("Login failed:", err.response?.data || err.message);
-            setError(err.response?.data?.message || "An error occurred during login.");
+            const { data } = await axiosInstance.post("auth/login", credentials);
+            login(data.data); // Update the authentication state
+            navigate("/dashboard");
+            console.log("Login successful:", data);
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
+            setError(error.response?.data?.message || "An error occurred during login.");
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 bg-gray-100 rounded ">
+        <form
+            onSubmit={handleFormSubmit}
+            className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg"
+        >
             {error && <ErrorBlock error={error} />}
+
             <InputField
                 label="Email"
-                type="text"
+                type="email"
                 name="email"
-                value={creds.email}
-                onChange={handleChange}
+                value={credentials.email}
+                onChange={handleInputChange}
                 placeholder="Enter your email"
+                required
             />
             <InputField
                 label="Password"
                 type="password"
                 name="password"
-                value={creds.password}
-                onChange={handleChange}
+                value={credentials.password}
+                onChange={handleInputChange}
                 placeholder="********"
+                required
             />
-            <div className="flex justify-center w-full">
-                <Button label={loading ? "Loading..." : "Login"} type="submit" disabled={loading} />
+
+            <div className="flex justify-center mt-4">
+                <Button
+                    label={isLoading ? "Logging in..." : "Login"}
+                    type="submit"
+                    disabled={isLoading}
+                />
             </div>
         </form>
     );

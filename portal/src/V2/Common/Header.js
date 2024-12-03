@@ -1,4 +1,5 @@
-import { useAuth } from "../context/AuthContext";
+import { useAtom } from "jotai";
+import { isAuthenticatedAtom, logoutAtom } from "../atoms/authAtoms";
 import LinkButtons from "../UI/LinkButtons";
 
 const Header = () => {
@@ -18,7 +19,12 @@ const LeftPart = () => (
 );
 
 const RightPart = () => {
-    const { logout, isAuthenticated } = useAuth();
+    const [isAuthenticated] = useAtom(isAuthenticatedAtom);
+    const [, logout] = useAtom(logoutAtom);
+
+    const handleLogout = () => {
+        logout();
+    };
 
     return (
         <div className="flex items-center">
@@ -26,7 +32,7 @@ const RightPart = () => {
                 <>
                     <NavLink label="Contact Us" path="/contact" />
                     <button
-                        onClick={logout}
+                        onClick={handleLogout}
                         className="bg-red-500 text-white p-2 px-4 rounded hover:bg-red-700 ml-2 hidden sm:block"
                     >
                         Log Out

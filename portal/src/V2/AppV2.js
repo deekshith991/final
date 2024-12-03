@@ -1,18 +1,20 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Provider, useAtomValue } from "jotai";
 
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { isAuthenticatedAtom } from "./atoms/authAtoms";
 import LoginPage from "./Pages/LoginPage";
 import DashboardPage from "./Pages/DashBoard";
 
 const PrivateRoute = ({ children }) => {
-    const { isAuthenticated } = useAuth();
+    // Using `useAtomValue` to directly read atom state without providing a setter
+    const isAuthenticated = useAtomValue(isAuthenticatedAtom);
 
     return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 function AppV2() {
     return (
-        <AuthProvider>
+        <Provider>
             <Router>
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
@@ -28,7 +30,8 @@ function AppV2() {
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Router>
-        </AuthProvider>
+        </Provider>
+
     );
 }
 
