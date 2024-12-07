@@ -22,7 +22,7 @@ const DashboardPage = () => {
         <Routes>
             {userData.accountType === "user" ? (
                 <>
-                    <Route path="/" element={<UserDashboard />} />
+                    <Route path="dashboard" element={<UserDashboard />} />
                     <Route path="profile" element={<UserProfile />} />
                     <Route path="settings" element={<UserSettings />} />
                     <Route path="about" element={<UserAbout />} />

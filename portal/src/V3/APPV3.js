@@ -23,7 +23,7 @@ const APPV3 = () => {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route
-                        path="/dashboard/*"
+                        path="/*"
                         element={
                             <PrivateRoute>
                                 <DashboardPage />
