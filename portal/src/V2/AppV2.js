@@ -4,6 +4,7 @@ import { Provider, useAtomValue } from "jotai";
 import { isAuthenticatedAtom } from "./atoms/authAtoms";
 import LoginPage from "./Pages/LoginPage";
 import DashboardPage from "./Pages/DashBoard";
+import RegisterPage from "./Pages/RegisterPage";
 
 const PrivateRoute = ({ children }) => {
     // Using `useAtomValue` to directly read atom state without providing a setter
@@ -18,6 +19,7 @@ function AppV2() {
             <Router>
                 <Routes>
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
                     <Route
                         path="/dashboard"
                         element={
