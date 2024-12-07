@@ -11,7 +11,7 @@ import CompanyProfile from "./Company/CompanyProfile";
 import CompanySettings from "./Company/CompanySettings";
 import CompanyAbout from "./Company/CompanyAbout";
 
-const DashboardPage = () => {
+const UserRoutesPage = () => {
     const { userData } = useAuth();
 
     if (!userData || !userData.accountType) {
@@ -40,4 +40,4 @@ const DashboardPage = () => {
     );
 };
 
-export default DashboardPage;
+export default UserRoutesPage;
