@@ -3,7 +3,7 @@ import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-d
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
 import { useAuth } from "./Contexts/AuthContext";
-import UserRoutesPage from "./Pages/Dashboard";
+import UserRoutesPage from "./Pages/UserRoutesPage";
 import Header from "./Components/Common/Header";
 import Sidebar from "./Components/Common/Sidebar";
 import { useState } from "react";
