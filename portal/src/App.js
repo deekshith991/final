@@ -1,8 +1,9 @@
+import IndexApp from "./V3/IndexApp";
 
 function App() {
   return (
     <div className="App">
-      <h1> hello </h1>
+      <IndexApp />
     </div>
   );
 }
