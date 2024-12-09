@@ -1,4 +1,3 @@
-// src/AppV3.jsx
 import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
@@ -13,6 +12,25 @@ const PrivateRoute = ({ children }) => {
     return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
+const AppRouter = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<h1>Welcome to JOB 4 U</h1>} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+                path="/*"
+                element={
+                    <PrivateRoute>
+                        <UserRoutesPage />
+                    </PrivateRoute>
+                }
+            />
+            <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+    );
+};
+
 const APPV3 = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -21,24 +39,18 @@ const APPV3 = () => {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col lg:flex-row min-h-screen bg-black">
             <Router>
-                <Header toggleSidebar={toggleSidebar} />
                 <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-                <div className="flex-grow p-4 lg:pl-64">
-                    <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route
-                            path="/*"
-                            element={
-                                <PrivateRoute>
-                                    <UserRoutesPage />
-                                </PrivateRoute>
-                            }
-                        />
-                        <Route path="*" element={<Navigate to="/login" />} />
-                    </Routes>
+
+                <div className="flex-1 flex flex-col">
+                    <Header toggleSidebar={toggleSidebar} />
+
+                    <main className="flex-1 p-4 bg-gray-100">
+                        <div className="bg-white p-6 rounded-lg shadow-md">
+                            <AppRouter />
+                        </div>
+                    </main>
                 </div>
             </Router>
         </div>

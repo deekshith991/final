@@ -29,7 +29,7 @@ const UserRoutesPage = () => {
                 </>
             ) : (
                 <>
-                    <Route path="/" element={<CompanyDashboard />} />
+                    <Route path="dashboard" element={<CompanyDashboard />} />
                     <Route path="profile" element={<CompanyProfile />} />
                     <Route path="settings" element={<CompanySettings />} />
                     <Route path="about" element={<CompanyAbout />} />
