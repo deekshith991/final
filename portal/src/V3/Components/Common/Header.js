@@ -42,12 +42,11 @@ const Brand = () => (
 );
 
 const AuthButtons = () => {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        logout();
-        navigate('/login');
+        navigate('/logout');
     };
 
     return (

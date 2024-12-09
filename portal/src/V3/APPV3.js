@@ -6,6 +6,7 @@ import UserRoutesPage from "./Pages/UserRoutesPage";
 import Header from "./Components/Common/Header";
 import Sidebar from "./Components/Common/Sidebar";
 import { useState } from "react";
+import LogoutPage from "./Pages/Logout";
 
 const PrivateRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -18,6 +19,7 @@ const AppRouter = () => {
             <Route path="/" element={<h1>Welcome to JOB 4 U</h1>} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/logout" element={<LogoutPage />} />
             <Route
                 path="/*"
                 element={
