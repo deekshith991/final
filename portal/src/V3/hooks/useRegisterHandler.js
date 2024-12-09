@@ -14,7 +14,7 @@ const useRegisterHandler = () => {
 
             login({ token, ...userData });
 
-            navigate("/dashboard");
+            navigate("/edit-profile");
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Registration failed. Please try again.";
             throw new Error(errorMessage);

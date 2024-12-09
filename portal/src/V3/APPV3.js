@@ -48,7 +48,7 @@ const APPV3 = () => {
                 <div className="flex-1 flex flex-col">
                     <Header toggleSidebar={toggleSidebar} />
 
-                    <main className="flex-1 p-4 bg-gray-100">
+                    <main className="flex-1 sm:p-1 md:p-4 bg-gray-100">
                         <div className="bg-white p-6 rounded-lg shadow-md">
                             <AppRouter />
                         </div>
